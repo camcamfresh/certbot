@@ -15,6 +15,7 @@ for SUBDOMAINS in $DOMAIN1 $DOMAIN2 $DOMAIN3 $DOMAIN4 $DOMAIN5; do
 	if [[ $SUBDOMAINS ]]; then
 		certbot certonly \
 			--agree-tos \
+			--expand \
 			--config-dir $CONFIG_DIR \
 			--dns-luadns \
 			--dns-luadns-credentials $LUADNS_PATH \

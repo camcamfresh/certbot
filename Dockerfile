@@ -11,7 +11,7 @@ VOLUME ["config"]
 
 COPY certbot.sh /bin/certbot/certbot.sh
 RUN chmod +x /bin/certbot/certbot.sh &&\
-	echo "0 0 * * * /bin/certbot/certbot.sh" | crontab - &&\
+	echo "0 */6 * * * /bin/certbot/certbot.sh" | crontab - &&\
 	apk update &&\
 	apk add gcc g++ libffi-dev openssl-dev py3-pip python3-dev &&\
 	pip3 install -U pip &&\

@@ -22,3 +22,5 @@ These enviroment variables should be set prior to testing this container. `examp
 ```bash
 docker run -e DOMAIN1='example.com,*.example.com' DOMAIN1='example.org,*.example.org' -e EMAIL='email@example.com' -v /luadns.ini:/config/luadns.ini camcamfresh/certbot
 ```
+
+Certbot is set to run every 6 hours or 4 times a day using cron and should have the ability to handle certificate renewals.
