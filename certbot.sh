@@ -1,9 +1,6 @@
 #!/bin/sh
 
-if [[ ! $DOMAINS ]]; then
-	echo 'Enviroment Variable "DOMAINS" is not set.' > /dev/stderr;
-	exit 1;
-elif [[ ! $EMAIL ]]; then
+if [[ ! $EMAIL ]]; then
 	echo 'Enviroment Variable "EMAIL" is not set.' > /dev/stderr;
 	exit 1;
 elif [[ ! $CONFIG_DIR ]]; then
@@ -14,13 +11,15 @@ elif [[ ! -r $LUADNS_PATH ]]; then
 	exit 1;
 fi
 
-for DOMAIN in $(echo $DOMAINS | sed 's/,/ /g'); do
-	certbot certonly \
-		--agree-tos \
-		--config-dir $CONFIG_DIR \
-		--dns-luadns \
-		--dns-luadns-credentials $LUADNS_PATH \
-		-d $DOMAIN,*.$DOMAIN \
-		-m $EMAIL \
-		-n;
+for SUBDOMAINS in $DOMAIN1 $DOMAIN2 $DOMAIN3 $DOMAIN4 $DOMAIN5; do
+	if [[ $SUBDOMAINS ]]; then
+		certbot certonly \
+			--agree-tos \
+			--config-dir $CONFIG_DIR \
+			--dns-luadns \
+			--dns-luadns-credentials $LUADNS_PATH \
+			-d $SUBDOMAINS \
+			-m $EMAIL \
+			-n;
+	fi
 done;

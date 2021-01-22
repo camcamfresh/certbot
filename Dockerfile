@@ -1,6 +1,8 @@
 FROM alpine:latest
 
-ENV DOMAINS="*.example.com"
+ENV DOMAIN1="example.com,*.example.com"
+ENV DOMAIN2="example.org,*.example.org"
+
 ENV EMAIL="email@example.com"
 ENV CONFIG_DIR="/config/certs"
 ENV LUADNS_PATH="/config/luadns.ini"
