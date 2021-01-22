@@ -20,7 +20,7 @@ for DOMAIN in $(echo $DOMAINS | sed 's/,/ /g'); do
 		--config-dir $CONFIG_DIR \
 		--dns-luadns \
 		--dns-luadns-credentials $LUADNS_PATH \
-		-d $DOMAIN \
+		-d $DOMAIN,*.$DOMAIN \
 		-m $EMAIL \
 		-n;
 done;
