@@ -28,13 +28,13 @@ for SUBDOMAINS in $DOMAIN1 $DOMAIN2 $DOMAIN3 $DOMAIN4 $DOMAIN5; do
 done;
 
 # Change Replace Symbolic Links with Original File (fix docker path mapping problems)
-cd $CONFIG_DIR/live
-for DIRECTORY in $(ls -Al | sed -ne '/^d.*/p' | sed -Ee 's/^.* (.*)$/\1/'); do
-	cd $DIRECTORY;
-	for LINK in $(ls -Al | sed -ne '/^l.*/p' | sed -Ee 's/^.* (.*) -> (.*)$/\1%%\2/'); do
-		NAME=$(echo $LINK | sed -Ee 's/^(.*)%%.*$/\1/');
-		LOCATION=$(echo $LINK | sed -Ee 's/^.*%%(.*)$/\1/');
-		mv $LOCATION $NAME;
-	done;
-	cd ..;
-done;
+# cd $CONFIG_DIR/live
+# for DIRECTORY in $(ls -Al | sed -ne '/^d.*/p' | sed -Ee 's/^.* (.*)$/\1/'); do
+	# cd $DIRECTORY;
+	# for LINK in $(ls -Al | sed -ne '/^l.*/p' | sed -Ee 's/^.* (.*) -> (.*)$/\1%%\2/'); do
+		# NAME=$(echo $LINK | sed -Ee 's/^(.*)%%.*$/\1/');
+		# LOCATION=$(echo $LINK | sed -Ee 's/^.*%%(.*)$/\1/');
+		# mv $LOCATION $NAME;
+	# done;
+	# cd ..;
+# done;
