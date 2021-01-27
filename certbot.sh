@@ -27,20 +27,20 @@ for SUBDOMAINS in $DOMAIN1 $DOMAIN2 $DOMAIN3 $DOMAIN4 $DOMAIN5; do
 	fi
 done;
 
-# Copy live files to ssl.
-if [[ -d "$CONFIG_DIR/certs/live" ]]; then
-	[[ -d "$CONFIG_DIR/ssl" ]] && rm -rf "$CONFIG_DIR/ssl";
-	cp -r "$CONFIG_DIR/certs/live" "$CONFIG_DIR/ssl";
-	cd "$CONFIG_DIR/ssl";
+# Copy SSL Certificates in certs/live to /ssl.
+LIVE="$CONFIG_DIR/certs/live";
+if [[ -d "$LIVE" ]]; then
+	[[ -d "$CONFIG_DIR/ssl" ]] || mkdir "$CONFIG_DIR/ssl";
 	
-	# Change Replace Symbolic Links with Original File (fix docker path mapping problems)
-	for DIRECTORY in $(ls -Al | sed -ne '/^d.*/p' | sed -Ee 's/^.* (.*)$/\1/'); do
-		cd $DIRECTORY;
-		for LINK in $(ls -Al | sed -ne '/^l.*/p' | sed -Ee 's/^.* (.*) -> (.*)$/\1%%\2/'); do
-			NAME=$(echo $LINK | sed -Ee 's/^(.*)%%.*$/\1/');
-			LOCATION=$(echo $LINK | sed -Ee 's/^.*%%(.*)$/\1/');
-			mv $LOCATION $NAME;
+	# Loop through each directory in /certs/live
+	for DIRECTORY in $(ls -Al "$LIVE" | sed -ne '/^d.*/p' | sed -Ee 's/^.* (.*)$/\1/'); do
+		[[ -d "CONFIG_DIR/ssl/$DIRECTORY" ]] || mkdir "CONFIG_DIR/ssl/$DIRECTORY";
+		
+		# Loop through each symbolic link in directory
+		for LINK in $(ls -Al "$LIVE/$DIRECTORY" | sed -ne '/^l.*/p' | sed -Ee 's/^.* (.*) -> (.*)$/\1;\2/'); do		
+			NAME=$(echo $LINK | sed -Ee 's/^(.*);.*$/\1/');
+			LOCATION=$(echo $LINK | sed -Ee 's/^.*;\.\.\/\.\.\/(.*)$/\1/');
+			cp "$CONFIG_DIR/certs/$LOCATION" "$CONFIG_DIR/ssl/$DIRECTORY/$NAME";
 		done;
-		cd ..;
 	done;
 fi
