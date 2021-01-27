@@ -34,7 +34,7 @@ if [[ -d "$LIVE" ]]; then
 	
 	# Loop through each directory in /certs/live
 	for DIRECTORY in $(ls -Al "$LIVE" | sed -ne '/^d.*/p' | sed -Ee 's/^.* (.*)$/\1/'); do
-		[[ -d "CONFIG_DIR/ssl/$DIRECTORY" ]] || mkdir "CONFIG_DIR/ssl/$DIRECTORY";
+		[[ -d "$CONFIG_DIR/ssl/$DIRECTORY" ]] || mkdir "$CONFIG_DIR/ssl/$DIRECTORY";
 		
 		# Loop through each symbolic link in directory
 		for LINK in $(ls -Al "$LIVE/$DIRECTORY" | sed -ne '/^l.*/p' | sed -Ee 's/^.* (.*) -> (.*)$/\1;\2/'); do		
