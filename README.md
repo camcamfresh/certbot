@@ -5,27 +5,28 @@ The Dockerfile pulls from `alpine:latest` and installs the required dependencies
 
 Certbot is set to run every 6 hours (4 times/day) using cron. However, it can manually be run by running the following shell script found within the container: `/bin/certbot/certbot.sh`.
 
-Certificates are obtained via a 'DOMAINS' environment variable. Comma-delineated domains will create a single certificate, whereas space-delineated domains create separate certificates.
-The following values would result in three separate certificates with two encompassing multiple domains.
+There are 3 environment variables that must be set in order for certbot to execute properly.
 ```dockerfile
 ENV DOMAINS="example.com,*example.com example.org,*example.org vpn.example.org"
-```
-
-In addition to DOMAINS, other enviroment variables must be set for certbot to execute properly.
-```dockerfile
 ENV EMAIL="email@example.com"
 ENV CONFIG_DIR="/config"
 ```
+
+
+ - DOMAINS - a string of domains to obtain certificates.
+   - Comma-delineated domains will create a single certificate
+   - Space-delineated domains create separate certificates.
+   - The `DOMAINS` value above would result in three separate certificates (two encompassing multiple domains).
  - EMAIL - a single email for certbot to use when requesting each certificate.
  - CONFIG_DIR - the container, folder path for configuration.
    - `luadns.ini` must have the domain's luadns email & api token.
-   - `certbot/` contains certbot's pervious work and archives.
    - `certs/` contains the SSL certificate files. (Note: These are not symbolic links and should prevent any Docker volume mapping issues.)
+   - `data/` contains certbot's pervious work and archives.
 
 It is highly recommended that one map the configuration directory when running the container; this will save certbot's previous work in the event of failure. In doing so, we decrease the chances of ever reaching the request rate limit for let's encrypt.
 
-Enviroment variables should be set prior to even testing this container. 
-`example.com` is a reserved TLD, and is automatically rejected by certbot.
+Enviroment variables should be set prior to testing this container. 
+`example.com` is a reserved TLD and will be automatically rejected by certbot.
 
 ```bash
 docker run -e DOMAINS='example.com,*.example.com example.org,*.example.org vpn.example.org' -e EMAIL='email@example.com' -v /config/:/config/ camcamfresh/certbot
