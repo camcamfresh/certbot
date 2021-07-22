@@ -12,8 +12,6 @@ RUN chmod +x /bin/certbot/certbot.sh &&\
 	apk update &&\
 	apk add gcc g++ libffi-dev openssl-dev py3-pip python3-dev py-cryptography &&\
 	pip3 install -U pip &&\
-	pip3 install -U certbot certbot-dns-luadns &&\
-	# TODO: Remove Version Lock when certbot-1.16.0 is available
-	pip3 install -U dns-lexicon==3.5
+	pip3 install -U certbot certbot-dns-luadns
 
 CMD ["crond", "-f"]
